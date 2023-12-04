@@ -30,4 +30,7 @@ body {
     border: none;
     background-color: transparent;
     font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }

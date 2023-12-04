@@ -1,0 +1,33 @@
+:root {
+    --periwinkle: #beb8ebff;
+    --celestial-blue: #5299d3ff;
+    --midnight-green: #0b5563ff;
+    --powder-blue: #a2bce0ff;
+    --davys-gray: #5e5c6cff;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins';
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    height: 100%;
+}
+
+.sidebar {
+    background-color: var(--periwinkle);
+}
+
+.sidebar > button {
+    appearance: none;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-family: inherit;
+}

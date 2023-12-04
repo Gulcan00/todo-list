@@ -8,6 +8,7 @@ export function createProject(title) {
    const getTodos = () => todoList;
 
    return {
+    title,
     addTodo,
     getTodos
    }

@@ -1,6 +1,6 @@
 :root {
     --periwinkle: #e8e6fa;
-    --celestial-blue: #5299d3ff;
+    --celestial-blue: #8FD5A6;
     --midnight-green: #0b5563ff;
     --powder-blue: #a2bce0ff;
     --davys-gray: #5e5c6cff;
@@ -43,8 +43,17 @@ body {
     padding: 4px 0px;
 }
 
-.sidebar > button:hover {
+.sidebar > button:not(.active):hover {
     background-color: var(--powder-blue);
+}
+
+.sidebar .active {
+    background-color: var(--celestial-blue);
+    color: #000080; /* Navy */
+}
+
+.sidebar .active .material-symbols-outlined {
+    color: var(--midnight-green);
 }
 
 .navbar {

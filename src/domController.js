@@ -7,14 +7,28 @@ function showNewTodoForm() {
 
 }
 
-function displayTask() {
+function displayTask(task) {
+    const container = document.createElement('div');
+    container.classList.add('task');
 
+    const {title, description, dueDate} = task;
+
+    return container;
 }
 
 
 export default function domController() {
     const projects = projectController();
     const newTaskForm = document.getElementById('new-task');
+    const tasksDiv = document.getElementById('tasks');
+
+    function updateScreen() {
+        // based on current active project
+        projects.getProjectByName('allTasks').getTodos().forEach(todo => {
+            const taskCont = displayTask(todo);
+            tasksDiv.appendChild(taskCont)
+        });
+    }
 
     newTaskForm.addEventListener('submit', (e) => {
         if (newTaskForm.checkValidity()) {
@@ -26,7 +40,7 @@ export default function domController() {
 
             const task = createTodo({title, description, dueDate, priority: "low"});
             projects.getProjectByName('allTasks').addTodo(task);
-            
+            updateScreen();
         }
 
     });
@@ -35,4 +49,5 @@ export default function domController() {
      * function to update page display tasks of the current active project
      * activeProject.forEach(todo => displayTask())
      */
+
 }

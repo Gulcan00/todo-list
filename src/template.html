@@ -37,6 +37,29 @@
                 All tasks
             </button>
         </nav>
+        <form action="/" id="new-task">
+            <label for="task-name">
+                Task name
+                <input type="text" id="task-name" name="task-name" required/>
+            </label>
+
+            <label for="description">
+                Description
+                <input type="text" id="description" name="description" required/>
+            </label>
+
+            <label for="due-date">
+                Due date
+                <input id="due-date" name="due-date" type="date">
+            </label>
+
+            <button type="button">
+                Cancel
+            </button>
+            <button>
+                Add task
+            </button>
+        </form>
     </div>
 </body>
 

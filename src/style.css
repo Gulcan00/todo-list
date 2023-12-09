@@ -1,5 +1,5 @@
 :root {
-    --periwinkle: #beb8ebff;
+    --periwinkle: #e8e6fa;
     --celestial-blue: #5299d3ff;
     --midnight-green: #0b5563ff;
     --powder-blue: #a2bce0ff;
@@ -22,6 +22,10 @@ body {
 
 .sidebar {
     background-color: var(--periwinkle);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .sidebar > button {
@@ -30,9 +34,17 @@ body {
     border: none;
     background-color: transparent;
     font-family: inherit;
+    font-size: inherit;
     display: flex;
     align-items: center;
     gap: 15px;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 0px;
+}
+
+.sidebar > button:hover {
+    background-color: var(--powder-blue);
 }
 
 .navbar {
@@ -48,4 +60,8 @@ body {
 
 .material-symbols-outlined.md-48 {
     font-size: 36px;
+}
+
+nav:not(.navbar) .material-symbols-outlined {
+    color: var(--davys-gray);
 }

@@ -1,4 +1,4 @@
-export function createTodo({
+export default function createTodo({
     title,
     description,
     dueDate,

@@ -35,7 +35,7 @@
           All tasks
         </button>
       </nav>
-      <div id="tasks">
+      <div>
         <form action="/" id="new-task">
           <label for="task-name">
             Task name
@@ -52,9 +52,21 @@
             <input id="due-date" name="due-date" type="date" />
           </label>
 
-          <button type="button">Cancel</button>
-          <button>Add task</button>
+          <label for="priority">
+            Priority
+            <select name="priority" id="priority">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </label>
+
+          <div>
+            <button type="button" class="cancel">Cancel</button>
+            <button class="submit">Add task</button>
+          </div>
         </form>
+        <div id="tasks"></div>
       </div>
     </div>
   </body>

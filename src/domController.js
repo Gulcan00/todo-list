@@ -47,6 +47,10 @@ export default function domController() {
       });
   }
 
+  function toggleVisibility() {
+    newTaskForm.style.display = (newTaskForm.style.display === "none" || newTaskForm.style.display === "") ? "flex" : "none";
+  }
+  
   newTaskForm.addEventListener("submit", (e) => {
     if (newTaskForm.checkValidity()) {
       e.preventDefault();
@@ -64,10 +68,6 @@ export default function domController() {
       toggleVisibility();
     }
   });
-
-  function toggleVisibility() {
-    newTaskForm.style.display = (newTaskForm.style.display === "none" || newTaskForm.style.display === "") ? "flex" : "none";
-  }
 
   addBtn.addEventListener("click", toggleVisibility);
   cancelBtn.addEventListener("click", toggleVisibility);

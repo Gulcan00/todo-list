@@ -1,6 +1,6 @@
+import { formatDistance, subDays } from 'date-fns'
 import projectController from "./projectController";
 import createTodo from "./todo";
-
 
 function displayTask(task) {
   const container = document.createElement("div");
@@ -8,16 +8,21 @@ function displayTask(task) {
 
   const { title, description, dueDate, priority } = task;
 
-  const titleDiv = document.createTextNode(title);
+  const titleDiv = document.createElement('div');
+  titleDiv.innerText = title;
   container.appendChild(titleDiv);
 
-  const descriptionDiv = document.createTextNode(description);
+  const descriptionDiv = document.createElement('div');
+  descriptionDiv.innerText = description;
   container.appendChild(descriptionDiv);
 
-  const dueDateDiv = document.createTextNode(dueDate);
+  const formattedDate = formatDistance(new Date(dueDate), new Date(), {addSuffix: true});
+  const dueDateDiv = document.createElement('div');
+  dueDateDiv.innerText = formattedDate;
   container.appendChild(dueDateDiv);
 
-  const priorityDiv = document.createTextNode(priority);
+  const priorityDiv = document.createElement('div');
+  priorityDiv.innerText = priority;
   container.appendChild(priorityDiv);
 
   return container;
@@ -56,6 +61,7 @@ export default function domController() {
       updateScreen();
 
       newTaskForm.reset();
+      toggleVisibility();
     }
   });
 

@@ -128,3 +128,10 @@ input[type="date"]:focus {
   outline: none;
   box-shadow: var(--powder-blue) 1.95px 1.95px 2.6px;
 }
+
+.task {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  background-color: var(--powder-blue);
+}

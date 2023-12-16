@@ -1,7 +1,7 @@
 import createProject from "./project";
 
 export default function projectController() {
-  let projects = [createProject()];
+  let projects = [createProject(), createProject("Today")];
 
   const addProject = (title) => projects.push(createProject(title));
 

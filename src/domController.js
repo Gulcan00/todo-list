@@ -12,18 +12,24 @@ function displayTask(task) {
   titleDiv.innerText = title;
   container.appendChild(titleDiv);
 
+  if (description) {
   const descriptionDiv = document.createElement('div');
   descriptionDiv.innerText = description;
   container.appendChild(descriptionDiv);
+  }
 
+  if (dueDate) {
   const formattedDate = formatDistance(new Date(dueDate), new Date(), {addSuffix: true});
   const dueDateDiv = document.createElement('div');
   dueDateDiv.innerText = formattedDate;
   container.appendChild(dueDateDiv);
+  }
 
+  if (priority) {
   const priorityDiv = document.createElement('div');
   priorityDiv.innerText = priority;
   container.appendChild(priorityDiv);
+  }
 
   return container;
 }
@@ -76,7 +82,7 @@ export default function domController() {
       const priority = formData.get("priority");
 
       const task = createTodo({ title, description, dueDate, priority });
-      projects.getProjectByName("All Tasks").addTodo(task);
+      projects.getProjectByName("All tasks").addTodo(task);
       updateScreen();
 
       newTaskForm.reset();

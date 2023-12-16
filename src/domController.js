@@ -38,13 +38,28 @@ export default function domController() {
   function updateScreen() {
     // based on current active project
     tasksDiv.innerHTML = null;
+    const currentTab = document.querySelector('.tab.active');
+    const projectName = currentTab.dataset.tab;
     projects
-      .getProjectByName("All Tasks")
+      .getProjectByName(projectName)
       .getTodos()
       .forEach((todo) => {
         const taskCont = displayTask(todo);
         tasksDiv.appendChild(taskCont);
       });
+  }
+
+  function handleTabClick() {
+    const tabs = document.querySelectorAll('.tab');
+  
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const currentActive = document.querySelector('.tab.active');
+        currentActive.classList.remove('active');
+        tab.classList.add('active');
+        updateScreen();
+      });
+    });
   }
 
   function toggleVisibility() {
@@ -71,4 +86,5 @@ export default function domController() {
 
   addBtn.addEventListener("click", toggleVisibility);
   cancelBtn.addEventListener("click", toggleVisibility);
+  handleTabClick();
 }

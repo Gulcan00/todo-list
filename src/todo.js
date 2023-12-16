@@ -10,7 +10,8 @@ export default function createTodo({
 
   const toggleComplete = () => {
     complete = !complete;
-  };
+    return {...this, complete};
+  }
 
   return {
     title,
@@ -19,7 +20,7 @@ export default function createTodo({
     priority,
     notes,
     checklist,
-    complete,
-    toggleComplete,
+    complete, 
+    toggleComplete
   };
 }

@@ -89,6 +89,8 @@ nav:not(.navbar) button:is(.tab) .material-symbols-outlined {
 
 #tasks {
   padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 form {
@@ -126,7 +128,8 @@ form div {
 
 input[type="text"],
 input[type="date"],
-select {
+select, 
+textarea {
   appearance: none;
   border: #9ca3af solid 1px;
   border-radius: 4px;
@@ -135,7 +138,8 @@ select {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
-select:focus {
+select:focus, 
+textarea:focus {
   border: var(--powder-blue) solid 2px;
   outline: none;
   box-shadow: var(--powder-blue) 1.95px 1.95px 2.6px;
@@ -173,5 +177,43 @@ label[for='priority']::after {
   display: flex;
   flex-direction: column;
   margin-bottom: 8px;
-  background-color: var(--powder-blue);
+  border-bottom: 2px solid var(--powder-blue);
+  position: relative;
+  padding-left: 28px;
+}
+
+div.task label {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+input[type='checkbox'] {
+ appearance: none;
+}
+
+input[type='checkbox'] + label > span::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--davys-gray);
+  position: absolute;
+  top: 5px;
+  left: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type='checkbox']:checked + label > span::before {
+  content: '✔';
+  color: white;
+  background-color: green;
+  border-color: green;
+}
+
+input[type='checkbox']:checked ~ div:first-of-type {
+  text-decoration: line-through;
 }

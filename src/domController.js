@@ -24,22 +24,22 @@ function displayTask(task) {
   const { title, description, dueDate, priority } = task;
 
   const checkBoxLbl = document.createElement('label');
-  checkBoxLbl.htmlFor = 'complete';
   const checkBox = document.createElement('input');
-  checkBox.id = 'complete';
+  const titleDiv = document.createElement('div');
+
   checkBox.name = 'complete';
   checkBox.type = 'checkbox';
   checkBox.checked = task.complete;
   checkBox.addEventListener('change', () => {
     const updatedTask = task.toggleComplete();
     checkBox.checked = updatedTask.complete;
+    titleDiv.style.textDecoration = titleDiv.style.textDecoration === 'line-through' ? 'none' : 'line-through';
   });
-  container.appendChild(checkBox);
+  checkBoxLbl.appendChild(checkBox);
   const checkBoxSpan = document.createElement('span');
   checkBoxLbl.appendChild(checkBoxSpan);
   container.appendChild(checkBoxLbl);
 
-  const titleDiv = document.createElement('div');
   titleDiv.innerText = title;
   titleDiv.style.fontWeight = 600;
   container.appendChild(titleDiv);
@@ -123,10 +123,11 @@ export default function domController() {
 
       const task = createTodo({ title, description, dueDate, priority });
 
+      // TODO FIX THIS
       if (dueDate === new Date()) {
         projects.getProjectByName('Today').addTodo(task);
       }
-      
+
       projects.getProjectByName(currentActive.dataset.tab).addTodo(task);
       updateScreen();
 

@@ -182,24 +182,20 @@ label[for='priority']::after {
   padding-left: 28px;
 }
 
-div.task label {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+
 
 input[type='checkbox'] {
  appearance: none;
 }
 
-input[type='checkbox'] + label > span::before {
+input[type='checkbox'] + span::before {
   content: '';
   width: 14px;
   height: 14px;
   border-radius: 50%;
   border: 2px solid var(--davys-gray);
   position: absolute;
-  top: 5px;
+  top: 0;
   left: 0;
   cursor: pointer;
   display: flex;
@@ -207,7 +203,7 @@ input[type='checkbox'] + label > span::before {
   justify-content: center;
 }
 
-input[type='checkbox']:checked + label > span::before {
+input[type='checkbox']:checked + span::before {
   content: '✔';
   color: white;
   background-color: green;

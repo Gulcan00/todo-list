@@ -1,6 +1,7 @@
 import createProject from "./project";
 
 export default function projectController() {
+  // TODO get from and save to local storage
   let projects = [createProject(), createProject("Today")];
 
   const addProject = (title) => projects.push(createProject(title));

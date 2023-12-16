@@ -1,4 +1,4 @@
-import { formatDistance, subDays } from 'date-fns'
+import { formatDistance } from 'date-fns'
 import projectController from "./projectController";
 import createTodo from "./todo";
 
@@ -39,7 +39,7 @@ export default function domController() {
     // based on current active project
     tasksDiv.innerHTML = null;
     projects
-      .getProjectByName("allTasks")
+      .getProjectByName("All Tasks")
       .getTodos()
       .forEach((todo) => {
         const taskCont = displayTask(todo);
@@ -61,7 +61,7 @@ export default function domController() {
       const priority = formData.get("priority");
 
       const task = createTodo({ title, description, dueDate, priority });
-      projects.getProjectByName("allTasks").addTodo(task);
+      projects.getProjectByName("All Tasks").addTodo(task);
       updateScreen();
 
       newTaskForm.reset();

@@ -2,6 +2,21 @@ import { formatDistance } from 'date-fns';
 import projectController from './projectController';
 import createTodo from './todo';
 
+function displayProject(title) {
+  /*
+   <button type="button" class="tab" data-tab="Today">
+          <span class="material-symbols-outlined"> today </span>
+          Today
+        </button>
+        */
+  const sidebar = document.querySelector('nav.sidebar');
+  const btn = document.createElement('button');
+  btn.classList.add('tab');
+  btn.dataset.tab = title;
+  btn.innerHTML = `<span class="material-symbols-outlined"> work </span>${title}`;
+  sidebar.appendChild(btn);
+}
+
 function displayTask(task) {
   const container = document.createElement('div');
   container.classList.add('task');
@@ -59,6 +74,9 @@ export default function domController() {
   const tasksDiv = document.getElementById('tasks');
   const addBtn = document.querySelector('.sidebar :first-child');
   const cancelBtn = document.querySelector('.cancel');
+  let currentActive = document.querySelector('.tab.active');
+  const newProjectBtn = document.querySelector('btn.new-project');
+  const newProjectForm = document.querySelector('form.new-project');
 
   function updateScreen() {
     // based on current active project
@@ -79,7 +97,7 @@ export default function domController() {
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
-        const currentActive = document.querySelector('.tab.active');
+        currentActive = document.querySelector('.tab.active');
         currentActive.classList.remove('active');
         tab.classList.add('active');
         updateScreen();
@@ -104,7 +122,12 @@ export default function domController() {
       const priority = formData.get('priority');
 
       const task = createTodo({ title, description, dueDate, priority });
-      projects.getProjectByName('All tasks').addTodo(task);
+
+      if (dueDate === new Date()) {
+        projects.getProjectByName('Today').addTodo(task);
+      }
+      
+      projects.getProjectByName(currentActive.dataset.tab).addTodo(task);
       updateScreen();
 
       newTaskForm.reset();
@@ -115,4 +138,15 @@ export default function domController() {
   addBtn.addEventListener('click', toggleVisibility);
   cancelBtn.addEventListener('click', toggleVisibility);
   handleTabClick();
+
+  newProjectForm.addEventListener('submit', (e) => {
+    if (newProjectForm.checkValidity()) {
+      e.preventDefault();
+      const formData = new FormData(newProjectForm);
+      const title = formData.get('title');
+      displayProject(title);
+      projects.addProject(title);
+      handleTabClick();
+    }
+  })
 }

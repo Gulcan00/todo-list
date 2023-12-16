@@ -57,11 +57,11 @@ button {
   max-width: max-content;
 }
 
-.sidebar > button[class*='tab']:not(.active):hover {
+.sidebar button[class*='tab']:not(.active):hover {
   background-color: var(--powder-blue);
 }
 
-.sidebar .active, .sidebar .tab.active .material-symbols-outlined {
+.sidebar .tab.active, .sidebar .tab.active .material-symbols-outlined {
   background-color: var(--celestial-blue);
   color: white;
   font-weight: 600;
@@ -93,7 +93,7 @@ nav:not(.navbar) button:is(.tab) .material-symbols-outlined {
   grid-template-columns: 1fr;
 }
 
-form {
+form#new-task {
   display: none;
   flex-direction: column;
   gap: 20px;

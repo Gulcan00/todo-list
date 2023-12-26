@@ -81,11 +81,12 @@ export default function domController() {
   const projects = projectController();
   const newTaskForm = document.getElementById("new-task");
   const tasksDiv = document.getElementById("tasks");
-  const addBtn = document.querySelector(".sidebar :first-child");
-  const cancelBtn = document.querySelector(".cancel");
+  const newTaskBtn = document.querySelector(".sidebar :first-child");
+  const cancelTaskBtn = document.querySelector("#new-task .cancel");
   let currentActive = document.querySelector(".tab.active");
   const newProjectBtn = document.querySelector("button.new-project");
-  const newProjectForm = document.querySelector("form.new-project");
+  const cancelProjectBtn = document.querySelector("#new-project .cancel");
+  const newProjectForm = document.querySelector("form#new-project");
 
   function updateScreen() {
     // based on current active project
@@ -114,11 +115,10 @@ export default function domController() {
     });
   }
 
-  function toggleVisibility() {
-    newTaskForm.style.display =
-      newTaskForm.style.display === "none" || newTaskForm.style.display === ""
-        ? "flex"
-        : "none";
+  function getNewDisplayValue(form) {
+    return form.style.display === "none" || form.style.display === ""
+      ? "flex"
+      : "none";
   }
 
   newTaskForm.addEventListener("submit", (e) => {
@@ -140,26 +140,44 @@ export default function domController() {
         projects.getProjectByName("Today").addTodo(task);
       }
 
+      currentActive = document.querySelector(".tab.active");
       projects.getProjectByName(currentActive.dataset.tab).addTodo(task);
+
+      if (currentActive.dataset.tab !== "All tasks") {
+        projects.getProjectByName("All tasks").addTodo(task);
+      }
+
       updateScreen();
 
       newTaskForm.reset();
-      toggleVisibility();
+      newTaskForm.style.display = getNewDisplayValue(newTaskForm);
     }
   });
 
-  addBtn.addEventListener("click", toggleVisibility);
-  cancelBtn.addEventListener("click", toggleVisibility);
+  newTaskBtn.addEventListener("click", () => {
+    newTaskForm.style.display = getNewDisplayValue(newTaskForm);
+  });
+  cancelTaskBtn.addEventListener("click", () => {
+    newTaskForm.style.display = getNewDisplayValue(newTaskForm);
+  });
   handleTabClick();
+
+  newProjectBtn.addEventListener("click", () => {
+    newProjectForm.style.display = getNewDisplayValue(newProjectForm);
+  });
+  cancelProjectBtn.addEventListener("click", () => {
+    newProjectForm.style.display = getNewDisplayValue(newProjectForm);
+  });
 
   newProjectForm.addEventListener("submit", (e) => {
     if (newProjectForm.checkValidity()) {
       e.preventDefault();
       const formData = new FormData(newProjectForm);
-      const title = formData.get("title");
+      const title = formData.get("project-name");
       displayProject(title);
       projects.addProject(title);
       handleTabClick();
+      newProjectForm.style.display = getNewDisplayValue(newProjectForm);
     }
   });
 }

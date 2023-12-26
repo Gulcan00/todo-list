@@ -42,14 +42,18 @@
             New
           </button>
         </div>
-        <div>
-          <form action="/" class="new-project">
-            <input type="text" name="title" required />
-            <button>Submit</button>
-          </form>
-        </div>
       </nav>
       <div>
+        <form action="/" id="new-project">
+          <label for="project-name">
+            Project Name
+            <input type="text" name="project-name" id="project-name" required />
+          </label>
+          <div>
+            <button type="button" class="cancel">Cancel</button>
+            <button class="submit">Add project</button>
+          </div>
+        </form>
         <form action="/" id="new-task">
           <label for="task-name">
             Task name
@@ -76,7 +80,7 @@
             Priority
             <select name="priority" id="priority">
               <option value="high">High</option>
-              <option value="medium">Medium</option>
+              <option value="medium" selected>Medium</option>
               <option value="low">Low</option>
             </select>
           </label>

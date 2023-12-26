@@ -99,7 +99,7 @@ nav:not(.navbar) button:is(.tab) .material-symbols-outlined {
   grid-template-columns: 1fr;
 }
 
-form#new-task {
+form {
   display: none;
   flex-direction: column;
   gap: 20px;
@@ -234,4 +234,8 @@ div.projects-header > button.new-project {
   padding: 4px;
   gap: 10px;
   color: var(--davys-gray);
+}
+
+form#new-project {
+  max-width: 50%;
 }

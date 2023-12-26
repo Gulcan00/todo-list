@@ -1,10 +1,36 @@
 import createProject from "./project";
+import createTodo from "./todo";
 
 export default function projectController() {
-  // TODO get from and save to local storage
   let projects = [createProject(), createProject("Today")];
 
-  const addProject = (title) => projects.push(createProject(title));
+  if (!localStorage.getItem("projectNames")) {
+    localStorage.setItem(
+      "projectNames",
+      JSON.stringify(["All tasks", "Today"]),
+    );
+  } else {
+    const projectNames = JSON.parse(localStorage.getItem("projectNames"));
+    const retrievedProjects = [];
+    projectNames.forEach((projectName) => {
+      const projectTasks = JSON.parse(localStorage.getItem(projectName));
+      retrievedProjects.push(createProject(projectName));
+      projectTasks.forEach((task) => {
+        const todo = createTodo(task);
+        retrievedProjects
+          .find((project) => project.title === projectName)
+          .addTodo(todo);
+      });
+    });
+    projects = retrievedProjects;
+  }
+
+  const addProject = (title) => {
+    const projectNames = JSON.parse(localStorage.getItem("projectNames"));
+    projectNames.push(title);
+    localStorage.setItem("projectNames", JSON.stringify(projectNames));
+    projects.push(createProject(title));
+  };
 
   const deleteProject = (title) => {
     projects = projects.filter((project) => project.title !== title);

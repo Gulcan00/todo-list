@@ -160,7 +160,6 @@ export default function domController() {
   cancelTaskBtn.addEventListener("click", () => {
     newTaskForm.style.display = getNewDisplayValue(newTaskForm);
   });
-  handleTabClick();
 
   newProjectBtn.addEventListener("click", () => {
     newProjectForm.style.display = getNewDisplayValue(newProjectForm);
@@ -180,4 +179,21 @@ export default function domController() {
       newProjectForm.style.display = getNewDisplayValue(newProjectForm);
     }
   });
+
+  projects
+    .getProjects()
+    .filter(
+      (project) => project.title !== "All tasks" && project.title !== "Today",
+    )
+    .forEach((project) => {
+      displayProject(project.title);
+    });
+  handleTabClick();
+  projects
+    .getProjectByName(currentActive.dataset.tab)
+    .getTodos()
+    .forEach((todo) => {
+      const taskCont = displayTask(todo);
+      tasksDiv.appendChild(taskCont);
+    });
 }

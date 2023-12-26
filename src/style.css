@@ -200,7 +200,7 @@ input[type="checkbox"] + span::before {
   border-radius: 50%;
   border: 2px solid var(--davys-gray);
   position: absolute;
-  top: 0;
+  top: 25px;
   left: 0;
   cursor: pointer;
   display: flex;

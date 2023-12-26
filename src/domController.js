@@ -11,7 +11,7 @@ function displayProject(title) {
   sidebar.appendChild(btn);
 }
 
-function displayTask(task) {
+function displayTask(task, deleteTask) {
   const container = document.createElement("div");
   container.classList.add("task");
 
@@ -74,6 +74,17 @@ function displayTask(task) {
     container.appendChild(priorityDiv);
   }
 
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerHTML = `<span class="material-symbols-outlined">
+  delete
+  </span>`;
+
+  deleteBtn.addEventListener("click", () => {
+    deleteTask(task.id);
+  });
+
+  container.appendChild(deleteBtn);
+
   return container;
 }
 
@@ -83,21 +94,27 @@ export default function domController() {
   const tasksDiv = document.getElementById("tasks");
   const newTaskBtn = document.querySelector(".sidebar :first-child");
   const cancelTaskBtn = document.querySelector("#new-task .cancel");
-  let currentActive = document.querySelector(".tab.active");
+  let activeTab = document.querySelector(".tab.active");
   const newProjectBtn = document.querySelector("button.new-project");
   const cancelProjectBtn = document.querySelector("#new-project .cancel");
   const newProjectForm = document.querySelector("form#new-project");
 
+  function deleteTask(id) {
+    projects.getProjectByName(activeTab.dataset.tab).deleteTodo(id);
+    // eslint-disable-next-line no-use-before-define
+    updateScreen();
+  }
+
   function updateScreen() {
     // based on current active project
     tasksDiv.innerHTML = null;
-    const currentTab = document.querySelector(".tab.active");
-    const projectName = currentTab.dataset.tab;
+    activeTab = document.querySelector(".tab.active");
+    const projectName = activeTab.dataset.tab;
     projects
       .getProjectByName(projectName)
       .getTodos()
       .forEach((todo) => {
-        const taskCont = displayTask(todo);
+        const taskCont = displayTask(todo, deleteTask);
         tasksDiv.appendChild(taskCont);
       });
   }
@@ -107,8 +124,8 @@ export default function domController() {
 
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
-        currentActive = document.querySelector(".tab.active");
-        currentActive.classList.remove("active");
+        activeTab = document.querySelector(".tab.active");
+        activeTab.classList.remove("active");
         tab.classList.add("active");
         updateScreen();
       });
@@ -140,10 +157,10 @@ export default function domController() {
         projects.getProjectByName("Today").addTodo(task);
       }
 
-      currentActive = document.querySelector(".tab.active");
-      projects.getProjectByName(currentActive.dataset.tab).addTodo(task);
+      activeTab = document.querySelector(".tab.active");
+      projects.getProjectByName(activeTab.dataset.tab).addTodo(task);
 
-      if (currentActive.dataset.tab !== "All tasks") {
+      if (activeTab.dataset.tab !== "All tasks") {
         projects.getProjectByName("All tasks").addTodo(task);
       }
 
@@ -190,10 +207,10 @@ export default function domController() {
     });
   handleTabClick();
   projects
-    .getProjectByName(currentActive.dataset.tab)
+    .getProjectByName(activeTab.dataset.tab)
     .getTodos()
     .forEach((todo) => {
-      const taskCont = displayTask(todo);
+      const taskCont = displayTask(todo, deleteTask);
       tasksDiv.appendChild(taskCont);
     });
 }

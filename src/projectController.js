@@ -15,12 +15,11 @@ export default function projectController() {
     projectNames.forEach((projectName) => {
       const projectTasks = JSON.parse(localStorage.getItem(projectName));
       retrievedProjects.push(createProject(projectName));
-      projectTasks.forEach((task) => {
-        const todo = createTodo(task);
-        retrievedProjects
-          .find((project) => project.title === projectName)
-          .addTodo(todo);
-      });
+
+      const todos = projectTasks.map((task) => createTodo(task));
+      retrievedProjects
+        .find((project) => project.title === projectName)
+        .addTodos(todos);
     });
     projects = retrievedProjects;
   }

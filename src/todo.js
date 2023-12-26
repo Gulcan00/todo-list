@@ -7,20 +7,22 @@ export default function createTodo({
   checklist = [],
 }) {
   let complete = false;
+  const id = Date.now();
 
   const toggleComplete = () => {
     complete = !complete;
-    return {...this, complete};
-  }
+    return { ...this, complete };
+  };
 
   return {
+    id,
     title,
     description,
     dueDate,
     priority,
     notes,
     checklist,
-    complete, 
-    toggleComplete
+    complete,
+    toggleComplete,
   };
 }

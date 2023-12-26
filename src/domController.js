@@ -70,9 +70,28 @@ function displayTask(task, deleteTask) {
 
   if (priority) {
     const priorityDiv = document.createElement("div");
-    priorityDiv.innerText = priority;
+    priorityDiv.style.display = "flex";
+    priorityDiv.style.alignItems = "baseline";
+    let color;
+    if (priority === "high") {
+      color = "red";
+    } else if (priority === "medium") {
+      color = "orange";
+    } else {
+      color = "blue";
+    }
+    priorityDiv.innerHTML = `<span style="color: ${color}; font-size: 18px;" class="material-symbols-outlined">
+    priority_high
+    </span>
+    ${priority}
+    `;
     container.appendChild(priorityDiv);
   }
+
+  const actionsDiv = document.createElement("div");
+  actionsDiv.style.display = "flex";
+  actionsDiv.style.gap = "15px";
+  actionsDiv.style.justifyContent = "flex-end";
 
   const deleteBtn = document.createElement("button");
   deleteBtn.innerHTML = `<span class="material-symbols-outlined">
@@ -83,7 +102,15 @@ function displayTask(task, deleteTask) {
     deleteTask(task.id);
   });
 
-  container.appendChild(deleteBtn);
+  actionsDiv.appendChild(deleteBtn);
+
+  const editBtn = document.createElement("button");
+  editBtn.innerHTML = `<span class="material-symbols-outlined">
+  edit
+  </span>`;
+  actionsDiv.appendChild(editBtn);
+
+  container.appendChild(actionsDiv);
 
   return container;
 }

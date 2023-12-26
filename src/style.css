@@ -41,13 +41,15 @@ button {
   font: inherit;
 }
 
-.sidebar > button {
+.sidebar > button,
+.new-project {
   background-color: transparent;
   display: flex;
   align-items: center;
   gap: 15px;
   border-radius: 6px;
   padding: 4px 0px;
+  padding-left: 8px;
 }
 
 .sidebar > button:not(.tab) {
@@ -57,11 +59,16 @@ button {
   max-width: max-content;
 }
 
-.sidebar button[class*='tab']:not(.active):hover {
+button:not(.tab):hover {
   background-color: var(--powder-blue);
 }
 
-.sidebar .tab.active, .sidebar .tab.active .material-symbols-outlined {
+.sidebar button[class*="tab"]:not(.active):hover {
+  background-color: var(--powder-blue);
+}
+
+.sidebar .tab.active,
+.sidebar .tab.active .material-symbols-outlined {
   background-color: var(--celestial-blue);
   color: white;
   font-weight: 600;
@@ -85,7 +92,6 @@ button {
 nav:not(.navbar) button:is(.tab) .material-symbols-outlined {
   color: var(--davys-gray);
 }
-
 
 #tasks {
   padding: 16px;
@@ -114,6 +120,7 @@ form#new-task {
   background-color: transparent;
   color: var(--midnight-green);
   font-weight: 600;
+  border-radius: 6px;
 }
 
 form div {
@@ -128,7 +135,7 @@ form div {
 
 input[type="text"],
 input[type="date"],
-select, 
+select,
 textarea {
   appearance: none;
   border: #9ca3af solid 1px;
@@ -138,7 +145,7 @@ textarea {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
-select:focus, 
+select:focus,
 textarea:focus {
   border: var(--powder-blue) solid 2px;
   outline: none;
@@ -156,7 +163,7 @@ label:first-child {
   margin-top: 16px;
 }
 
-label[for='priority'] {
+label[for="priority"] {
   position: relative;
 }
 
@@ -164,12 +171,12 @@ select {
   min-width: 120px;
 }
 
-label[for='priority']::after {
-  content: '▼';
+label[for="priority"]::after {
+  content: "▼";
   color: var(--davys-gray);
   position: absolute;
   top: 4px;
-  left: 150px;
+  left: 175px;
   pointer-events: none;
 }
 
@@ -182,14 +189,12 @@ label[for='priority']::after {
   padding-left: 28px;
 }
 
-
-
-input[type='checkbox'] {
- appearance: none;
+input[type="checkbox"] {
+  appearance: none;
 }
 
-input[type='checkbox'] + span::before {
-  content: '';
+input[type="checkbox"] + span::before {
+  content: "";
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -203,13 +208,30 @@ input[type='checkbox'] + span::before {
   justify-content: center;
 }
 
-input[type='checkbox']:checked + span::before {
-  content: '✔';
+input[type="checkbox"]:checked + span::before {
+  content: "✔";
   color: white;
   background-color: green;
   border-color: green;
 }
 
-input[type='checkbox']:checked ~ div:first-of-type {
+input[type="checkbox"]:checked ~ div:first-of-type {
   text-decoration: line-through;
+}
+
+textarea {
+  resize: none;
+  width: 80%;
+}
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.projects-header > button.new-project {
+  padding: 4px;
+  gap: 10px;
+  color: var(--davys-gray);
 }

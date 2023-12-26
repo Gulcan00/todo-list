@@ -35,7 +35,7 @@
           All tasks
         </button>
         <div class="divider"></div>
-        <div>
+        <div class="projects-header">
           <h3>My Projects</h3>
           <button type="button" class="new-project">
             <span class="material-symbols-outlined"> add_circle </span>
@@ -44,10 +44,9 @@
         </div>
         <div>
           <form action="/" class="new-project">
-            <input type="text" name="title" required>
+            <input type="text" name="title" required />
             <button>Submit</button>
           </form>
-
         </div>
       </nav>
       <div>
@@ -59,7 +58,13 @@
 
           <label for="description">
             Description
-            <textarea name="description" id="description" cols="20" rows="10" maxlength="150"></textarea>
+            <textarea
+              name="description"
+              id="description"
+              cols="20"
+              rows="10"
+              maxlength="150"
+            ></textarea>
           </label>
 
           <label for="due-date">

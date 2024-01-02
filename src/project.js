@@ -19,9 +19,11 @@ export default function createProject(title = "All tasks") {
   const deleteTodo = (id) => {
     const todosLocalStorage = JSON.parse(localStorage.getItem(title)) || [];
     const todoIndex = todoList.findIndex((todo) => todo.id === id);
-    todoList.splice(todoIndex, 1);
-    todosLocalStorage.splice(todoIndex, 1);
-    localStorage.setItem(title, JSON.stringify(todosLocalStorage));
+    if (todoIndex >= 0) {
+      todoList.splice(todoIndex, 1);
+      todosLocalStorage.splice(todoIndex, 1);
+      localStorage.setItem(title, JSON.stringify(todosLocalStorage));
+    }
   };
 
   const updateTodo = (updatedTodo) => {

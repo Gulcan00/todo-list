@@ -1,11 +1,11 @@
-export default function createTodo({ title, description, dueDate, priority }) {
-  let complete = false;
+export default function createTodo({
+  title,
+  description,
+  dueDate,
+  priority,
+  complete = false,
+}) {
   const id = Date.now();
-
-  const toggleComplete = () => {
-    complete = !complete;
-    return { ...this, complete };
-  };
 
   return {
     id,
@@ -14,6 +14,5 @@ export default function createTodo({ title, description, dueDate, priority }) {
     dueDate,
     priority,
     complete,
-    toggleComplete,
   };
 }

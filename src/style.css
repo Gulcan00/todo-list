@@ -1,6 +1,6 @@
 :root {
   --midnight-green: #0b3c49ff;
-  --byzantium: #731963ff;
+  --byzantium: #d62839;
   --white: #fffdfdff;
   --timberwolf: #cbd2d0ff;
   --celestial-blue: #5398be;
@@ -30,6 +30,10 @@ body {
 .sidebar {
   background-color: var(--timberwolf);
   padding: 16px;
+}
+
+.sidebar,
+.projects {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -44,6 +48,7 @@ button {
 }
 
 .sidebar > button,
+.projects > button,
 .new-project {
   background-color: transparent;
   display: flex;
@@ -62,16 +67,16 @@ button {
 }
 
 button:not(.tab):hover {
-  background-color: #a21caf;
+  background-color: #ba324f;
   color: var(--white);
 }
 
-.sidebar button[class*="tab"]:not(.active):hover {
+button[class*="tab"]:not(.active):hover {
   background-color: var(--midnight-green);
   color: var(--white);
 }
 
-.sidebar .tab.active,
+.tab.active,
 .sidebar .tab.active .material-symbols-outlined {
   background-color: var(--midnight-green);
   color: white;
@@ -147,7 +152,7 @@ input[type="text"]:focus,
 input[type="date"]:focus,
 select:focus,
 textarea:focus {
-  border: #a21caf solid 2px;
+  border: #ba324f solid 2px;
   outline: none;
   box-shadow: #e879f9 1.95px 1.95px 2.6px;
 }
@@ -251,7 +256,8 @@ button.edit:hover {
 }
 
 .delete > span,
-.edit > span {
+.edit > span,
+.sidebar .tab .material-symbols-outlined {
   color: #4b5563;
 }
 

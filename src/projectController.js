@@ -22,6 +22,7 @@ export default function projectController() {
         .addTodos(todos);
     });
     projects = retrievedProjects;
+    console.log(retrievedProjects);
   }
 
   const addProject = (title) => {
@@ -33,6 +34,8 @@ export default function projectController() {
 
   const deleteProject = (title) => {
     projects = projects.filter((project) => project.title !== title);
+    localStorage.removeItem(title);
+    localStorage.setItem("projectNames", JSON.stringify(projects));
   };
 
   const getProjects = () => projects;

@@ -24,6 +24,16 @@ export default function createProject(title = "All tasks") {
     localStorage.setItem(title, JSON.stringify(todosLocalStorage));
   };
 
+  const updateTodo = (updatedTodo) => {
+    const todosLocalStorage = JSON.parse(localStorage.getItem(title)) || [];
+    const todoIndex = todoList.findIndex((todo) => todo.id === updatedTodo.id);
+    if (todoIndex >= 0) {
+      todoList[todoIndex] = { ...todoList[todoIndex], ...updatedTodo };
+      todosLocalStorage[todoIndex] = { ...todoList[todoIndex] };
+      localStorage.setItem(title, JSON.stringify(todosLocalStorage));
+    }
+  };
+
   const getTodos = () => todoList;
 
   return {
@@ -31,6 +41,7 @@ export default function createProject(title = "All tasks") {
     addTodo,
     addTodos,
     deleteTodo,
+    updateTodo,
     getTodos,
   };
 }

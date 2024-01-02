@@ -79,12 +79,14 @@
           <label for="priority">
             Priority
             <select name="priority" id="priority">
-              <option value="high">High</option>
-              <option value="medium" selected>Medium</option>
+              <option value="" selected>None</option>
               <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
             </select>
           </label>
 
+          <input type="hidden" name="task-id" id="task-id" />
           <div>
             <button type="button" class="cancel">Cancel</button>
             <button class="submit">Add task</button>

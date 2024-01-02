@@ -15,7 +15,7 @@ function displayTask(task, deleteTask) {
   const container = document.createElement("div");
   container.classList.add("task");
 
-  const { title, description, dueDate, priority } = task;
+  const { id, title, description, dueDate, priority } = task;
 
   const checkBoxLbl = document.createElement("label");
   const checkBox = document.createElement("input");
@@ -94,20 +94,47 @@ function displayTask(task, deleteTask) {
   actionsDiv.style.justifyContent = "flex-end";
 
   const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete");
   deleteBtn.innerHTML = `<span class="material-symbols-outlined">
   delete
   </span>`;
 
   deleteBtn.addEventListener("click", () => {
-    deleteTask(task.id);
+    deleteTask(id);
   });
 
   actionsDiv.appendChild(deleteBtn);
 
   const editBtn = document.createElement("button");
+  editBtn.classList.add("edit");
   editBtn.innerHTML = `<span class="material-symbols-outlined">
   edit
   </span>`;
+  editBtn.addEventListener("click", () => {
+    const form = document.getElementById("new-task");
+    const taskId = document.getElementById("task-id");
+    taskId.value = id;
+
+    const name = document.getElementById("task-name");
+    name.value = title;
+
+    if (description) {
+      const descriptionTxt = document.getElementById("description");
+      descriptionTxt.value = description;
+    }
+
+    if (dueDate) {
+      const dueDateInput = document.getElementById("due-date");
+      dueDateInput.value = dueDate;
+    }
+
+    if (priority) {
+      const prioritySelect = document.getElementById("priority");
+      prioritySelect.value = priority;
+    }
+
+    form.style.display = "flex";
+  });
   actionsDiv.appendChild(editBtn);
 
   container.appendChild(actionsDiv);
@@ -173,22 +200,35 @@ export default function domController() {
       const description = formData.get("description");
       const dueDate = formData.get("due-date");
       const priority = formData.get("priority");
+      const taskId = parseInt(formData.get("task-id"), 10);
+      if (!taskId) {
+        const task = createTodo({ title, description, dueDate, priority });
 
-      const task = createTodo({ title, description, dueDate, priority });
+        const dueDateObj = new Date(dueDate);
+        dueDateObj.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (isEqual(dueDateObj, today)) {
+          projects.getProjectByName("Today").addTodo(task);
+        }
 
-      const dueDateObj = new Date(dueDate);
-      dueDateObj.setHours(0, 0, 0, 0);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (isEqual(dueDateObj, today)) {
-        projects.getProjectByName("Today").addTodo(task);
-      }
+        activeTab = document.querySelector(".tab.active");
+        projects.getProjectByName(activeTab.dataset.tab).addTodo(task);
 
-      activeTab = document.querySelector(".tab.active");
-      projects.getProjectByName(activeTab.dataset.tab).addTodo(task);
+        if (activeTab.dataset.tab !== "All tasks") {
+          projects.getProjectByName("All tasks").addTodo(task);
+        }
+      } else {
+        activeTab = document.querySelector(".tab.active");
+        projects
+          .getProjectByName(activeTab.dataset.tab)
+          .updateTodo({ id: taskId, title, description, dueDate, priority });
 
-      if (activeTab.dataset.tab !== "All tasks") {
-        projects.getProjectByName("All tasks").addTodo(task);
+        if (activeTab.dataset.tab !== "All tasks") {
+          projects
+            .getProjectByName("All tasks")
+            .updateTodo({ id: taskId, title, description, dueDate, priority });
+        }
       }
 
       updateScreen();

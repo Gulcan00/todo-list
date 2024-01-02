@@ -1,11 +1,4 @@
-export default function createTodo({
-  title,
-  description,
-  dueDate,
-  priority,
-  notes = "",
-  checklist = [],
-}) {
+export default function createTodo({ title, description, dueDate, priority }) {
   let complete = false;
   const id = Date.now();
 
@@ -20,8 +13,6 @@ export default function createTodo({
     description,
     dueDate,
     priority,
-    notes,
-    checklist,
     complete,
     toggleComplete,
   };

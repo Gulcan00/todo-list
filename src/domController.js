@@ -2,34 +2,47 @@ import { formatDistance, isEqual, differenceInDays, format } from "date-fns";
 import projectController from "./projectController";
 import createTodo from "./todo";
 
+// Helper functions
+function createButton(className, innerHTML) {
+  const btn = document.createElement("button");
+  btn.classList.add(className);
+  btn.innerHTML = innerHTML;
+  return btn;
+}
+
+function createDiv(className, innerText) {
+  const div = document.createElement("div");
+  div.classList.add(className);
+  if (innerText) div.innerText = innerText;
+  return div;
+}
+
 function displayProject(title) {
   const projectsDiv = document.querySelector(".projects");
   const btn = document.createElement("button");
+
   btn.classList.add("tab");
   btn.dataset.tab = title;
   btn.innerHTML = `<span class="material-symbols-outlined"> work </span>${title}`;
   projectsDiv.appendChild(btn);
 }
 
-function displayTask(task, deleteTask, updateTask) {
-  const container = document.createElement("div");
-  container.classList.add("task");
-
+function displayTask(task) {
   const { id, title, description, dueDate, priority, complete } = task;
-
+  const container = document.createElement("div");
   const checkBoxLbl = document.createElement("label");
   const checkBox = document.createElement("input");
   const titleDiv = document.createElement("div");
+  const checkBoxSpan = document.createElement("span");
+
+  container.classList.add("task");
+  container.id = id;
 
   checkBox.name = "complete";
   checkBox.type = "checkbox";
   checkBox.checked = complete;
-  checkBox.addEventListener("change", () => {
-    const updatedTask = { ...task, complete: checkBox.checked };
-    updateTask(updatedTask);
-  });
   checkBoxLbl.appendChild(checkBox);
-  const checkBoxSpan = document.createElement("span");
+
   checkBoxLbl.appendChild(checkBoxSpan);
   container.appendChild(checkBoxLbl);
 
@@ -39,8 +52,7 @@ function displayTask(task, deleteTask, updateTask) {
   container.appendChild(titleDiv);
 
   if (description) {
-    const descriptionDiv = document.createElement("div");
-    descriptionDiv.innerText = description;
+    const descriptionDiv = createDiv(description);
     container.appendChild(descriptionDiv);
   }
 
@@ -60,8 +72,7 @@ function displayTask(task, deleteTask, updateTask) {
         addSuffix: true,
       });
     }
-    const dueDateDiv = document.createElement("div");
-    dueDateDiv.innerText = formattedDate;
+    const dueDateDiv = createDiv(formattedDate);
     container.appendChild(dueDateDiv);
   }
 
@@ -91,29 +102,24 @@ function displayTask(task, deleteTask, updateTask) {
   actionsDiv.style.gap = "15px";
   actionsDiv.style.justifyContent = "flex-end";
 
-  const deleteBtn = document.createElement("button");
-  deleteBtn.classList.add("delete");
-  deleteBtn.innerHTML = `<span class="material-symbols-outlined">
+  const deleteIcon = `<span class="material-symbols-outlined">
   delete
   </span>`;
-
-  deleteBtn.addEventListener("click", () => {
-    deleteTask(id);
-  });
+  const deleteBtn = createButton("delete", deleteIcon);
 
   actionsDiv.appendChild(deleteBtn);
 
-  const editBtn = document.createElement("button");
-  editBtn.classList.add("edit");
-  editBtn.innerHTML = `<span class="material-symbols-outlined">
+  const editIcon = `<span class="material-symbols-outlined">
   edit
   </span>`;
+  const editBtn = createButton("edit", editIcon);
+
   editBtn.addEventListener("click", () => {
     const form = document.getElementById("new-task");
     const taskId = document.getElementById("task-id");
-    taskId.value = id;
-
     const name = document.getElementById("task-name");
+
+    taskId.value = id;
     name.value = title;
 
     if (description) {
@@ -146,59 +152,13 @@ export default function domController() {
   const tasksDiv = document.getElementById("tasks");
   const newTaskBtn = document.querySelector(".sidebar :first-child");
   const cancelTaskBtn = document.querySelector("#new-task .cancel");
-  let activeTab = document.querySelector(".tab.active");
   const newProjectBtn = document.querySelector("button.new-project");
   const cancelProjectBtn = document.querySelector("#new-project .cancel");
   const newProjectForm = document.querySelector("form#new-project");
   const projectsDiv = document.querySelector(".projects");
+  let activeTab = document.querySelector(".tab.active");
 
-  function deleteTask(id) {
-    projects.getProjects().forEach((project) => project.deleteTodo(id));
-    // eslint-disable-next-line no-use-before-define
-    updateScreen();
-  }
-
-  function updateTask(task) {
-    projects.getProjects().forEach((project) => project.updateTodo(task));
-    // eslint-disable-next-line no-use-before-define
-    updateScreen();
-  }
-
-  function updateScreen() {
-    // based on current active project
-    tasksDiv.innerHTML = null;
-    activeTab = document.querySelector(".tab.active");
-    const projectName = activeTab.dataset.tab;
-    if (projectName !== "Today" && projectName !== "All tasks") {
-      const div = document.createElement("div");
-      div.style.display = "flex";
-      div.style.alignItems = "center";
-      div.style.gap = "4px";
-      const name = document.createElement("h2");
-      name.innerText = projectName;
-      div.appendChild(name);
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.classList.add("delete");
-      deleteBtn.innerHTML = `<span class="material-symbols-outlined">
-      delete
-      </span>`;
-      deleteBtn.addEventListener("click", handleDeleteProject);
-      div.appendChild(deleteBtn);
-
-      tasksDiv.appendChild(div);
-    }
-
-    projects
-      .getProjectByName(projectName)
-      .getTodos()
-      .forEach((todo) => {
-        const taskCont = displayTask(todo, deleteTask, updateTask);
-        tasksDiv.appendChild(taskCont);
-      });
-  }
-
-  function handleTabClick() {
+  function handleTabClick(updateScreenCB) {
     const tabs = document.querySelectorAll(".tab");
 
     tabs.forEach((tab) => {
@@ -206,12 +166,13 @@ export default function domController() {
         activeTab = document.querySelector(".tab.active");
         activeTab.classList.remove("active");
         tab.classList.add("active");
-        updateScreen();
+        activeTab = tab;
+        updateScreenCB();
       });
     });
   }
 
-  function handleDeleteProject() {
+  function handleDeleteProject(updateScreenCB) {
     const projectName = document.querySelector(".tab.active").dataset.tab;
     projects
       .getProjectByName(projectName)
@@ -232,7 +193,64 @@ export default function domController() {
       .forEach((project) => {
         displayProject(project.title);
       });
-    handleTabClick();
+    handleTabClick(updateScreenCB);
+  }
+
+  function updateScreen() {
+    // based on current active project
+    const projectName = activeTab.dataset.tab;
+    tasksDiv.innerHTML = null;
+    activeTab = document.querySelector(".tab.active");
+
+    const header = document.querySelector("div.project-header");
+    if (header) {
+      tasksDiv.removeChild(header);
+    }
+
+    if (projectName !== "Today" && projectName !== "All tasks") {
+      const div = document.createElement("div");
+      div.classList.add("project-header");
+      div.style.display = "flex";
+      div.style.alignItems = "center";
+      div.style.gap = "4px";
+      const name = document.createElement("h2");
+      name.innerText = projectName;
+      div.appendChild(name);
+
+      const deleteIcon = `<span class="material-symbols-outlined">
+      delete
+      </span>`;
+      const deleteBtn = createButton("delete", deleteIcon);
+      deleteBtn.addEventListener("click", () =>
+        handleDeleteProject(updateScreen),
+      );
+      div.appendChild(deleteBtn);
+
+      tasksDiv.appendChild(div);
+    }
+
+    projects
+      .getProjectByName(projectName)
+      .getTodos()
+      .forEach((todo) => {
+        const taskContainer = displayTask(todo);
+        const checkBox = taskContainer.querySelector('input[type="checkbox"]');
+        checkBox.addEventListener("change", () => {
+          const updatedTask = { ...todo, complete: checkBox.checked };
+          projects
+            .getProjects()
+            .forEach((project) => project.updateTodo(updatedTask));
+          updateScreen();
+        });
+        const deleteBtn = taskContainer.querySelector("button.delete");
+        deleteBtn.addEventListener("click", () => {
+          projects
+            .getProjects()
+            .forEach((project) => project.deleteTodo(todo.id));
+          updateScreen();
+        });
+        tasksDiv.appendChild(taskContainer);
+      });
   }
 
   function getNewDisplayValue(form) {
@@ -309,7 +327,7 @@ export default function domController() {
       if (!projects.getProjectByName(title)) {
         displayProject(title);
         projects.addProject(title);
-        handleTabClick();
+        handleTabClick(updateScreen);
         newProjectForm.style.display = getNewDisplayValue(newProjectForm);
       }
     }
@@ -323,12 +341,12 @@ export default function domController() {
     .forEach((project) => {
       displayProject(project.title);
     });
-  handleTabClick();
+  handleTabClick(updateScreen);
   projects
     .getProjectByName(activeTab.dataset.tab)
     .getTodos()
     .forEach((todo) => {
-      const taskCont = displayTask(todo, deleteTask, updateTask);
+      const taskCont = displayTask(todo);
       tasksDiv.appendChild(taskCont);
     });
 }

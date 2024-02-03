@@ -150,7 +150,7 @@ export default function domController() {
   const projects = projectController();
   const newTaskForm = document.getElementById("new-task");
   const tasksDiv = document.getElementById("tasks");
-  const newTaskBtn = document.querySelector(".sidebar :first-child");
+  const newTaskBtn = document.querySelector("aside :first-child");
   const cancelTaskBtn = document.querySelector("#new-task .cancel");
   const newProjectBtn = document.querySelector("button.new-project");
   const cancelProjectBtn = document.querySelector("#new-project .cancel");

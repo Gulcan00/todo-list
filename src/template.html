@@ -17,10 +17,20 @@
   <body>
     <div class="container">
       <nav>
+        <button
+          type="button"
+          aria-label="menu"
+          class="menu-button"
+          aria-haspopup="menu"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <span class="material-symbols-outlined"> menu </span>
+        </button>
         <span class="material-symbols-outlined md-48">checklist</span>
         <h1>Task Master</h1>
       </nav>
-      <aside>
+      <aside id="sidebar">
         <button type="button">
           <span class="material-symbols-outlined" aria-hidden="true">
             add_circle

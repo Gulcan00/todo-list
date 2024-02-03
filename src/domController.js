@@ -167,6 +167,7 @@ export default function domController() {
   const cancelProjectBtn = document.querySelector("#new-project .cancel");
   const newProjectForm = document.querySelector("form#new-project");
   const projectsDiv = document.querySelector(".projects");
+  const menuBtn = document.querySelector(".menu-button");
   let activeTab = document.querySelector(".tab.active");
 
   function handleTabClick(updateScreenCB) {
@@ -241,6 +242,13 @@ export default function domController() {
 
       tasksDiv.appendChild(div);
       name.focus();
+    }
+
+    if (projects.getProjectByName(projectName).getTodos().length === 0) {
+      const noTasks = document.createTextNode(
+        "No tasks yet. Click 'Add Task' to get started!",
+      );
+      tasksDiv.appendChild(noTasks);
     }
 
     projects
@@ -346,6 +354,19 @@ export default function domController() {
         handleTabClick(updateScreen);
         newProjectForm.style.display = getNewDisplayValue(newProjectForm);
       }
+    }
+  });
+
+  menuBtn.addEventListener("click", () => {
+    const sidebar = document.querySelector("aside");
+    sidebar.classList.toggle("slide-in");
+    const state = sidebar.classList.contains("slide-in") ? "true" : "false";
+    menuBtn.setAttribute("aria-expanded", state);
+
+    if (state === "true") {
+      setTimeout(() => {
+        newTaskBtn.focus();
+      }, 300);
     }
   });
 

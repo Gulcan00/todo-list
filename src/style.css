@@ -46,6 +46,11 @@ button {
   font: inherit;
 }
 
+button:focus-visible,
+input[type="checkbox"]:focus-visible + span::before {
+  outline: 3px var(--celestial-blue) solid;
+}
+
 aside > button,
 .projects > button,
 .new-project {
@@ -94,7 +99,12 @@ nav {
 h1 {
   font-size: 1.75rem;
 }
-
+h2 {
+  font-size: 1.125rem;
+}
+p {
+  margin: 0;
+}
 .material-symbols-outlined.md-48 {
   font-size: 36px;
 }
@@ -177,12 +187,15 @@ select {
   min-width: 120px;
 }
 
-label[for="priority"]::after {
+label[for="priority"] span {
+  position: relative;
+}
+label[for="priority"] span::after {
   content: "▼";
   color: var(--gray);
   position: absolute;
   top: 4px;
-  left: 175px;
+  left: 100px;
   pointer-events: none;
 }
 

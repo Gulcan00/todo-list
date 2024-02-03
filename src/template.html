@@ -22,29 +22,42 @@
       </nav>
       <aside>
         <button type="button">
-          <span class="material-symbols-outlined"> add_circle </span>
+          <span class="material-symbols-outlined" aria-hidden="true">
+            add_circle
+          </span>
           Add task
         </button>
         <button type="button" class="tab" data-tab="Today">
-          <span class="material-symbols-outlined"> today </span>
+          <span class="material-symbols-outlined" aria-hidden="true">
+            today
+          </span>
           Today
         </button>
         <button type="button" class="tab active" data-tab="All tasks">
-          <span class="material-symbols-outlined"> inbox </span>
+          <span class="material-symbols-outlined" aria-hidden="true">
+            inbox
+          </span>
           All tasks
         </button>
         <div class="divider"></div>
         <div class="projects-header">
-          <h3>My Projects</h3>
-          <button type="button" class="new-project">
-            <span class="material-symbols-outlined"> add_circle </span>
+          <h2 id="projects-title">My Projects</h2>
+          <button
+            id="new-project"
+            type="button"
+            class="new-project"
+            aria-labelledby="projects-title new-project"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">
+              add_circle
+            </span>
             New
           </button>
         </div>
         <div class="projects"></div>
       </aside>
       <main>
-        <form action="/" id="new-project">
+        <form action="/" id="new-project" tabindex="-1">
           <label for="project-name">
             Project Name
             <input type="text" name="project-name" id="project-name" required />
@@ -54,11 +67,14 @@
             <button class="submit">Add project</button>
           </div>
         </form>
-        <form action="/" id="new-task">
+        <form action="/" id="new-task" tabindex="-1">
           <label for="task-name">
             Task name
             <input type="text" id="task-name" name="task-name" required />
-            <span><span aria-label="required">*</span>Required</span>
+            <span
+              ><span aria-label="required" aria-hidden="true">*</span
+              >Required</span
+            >
           </label>
 
           <label for="description">
@@ -79,6 +95,7 @@
 
           <label for="priority">
             Priority
+            <span aria-hidden="true"></span>
             <select name="priority" id="priority">
               <option value="" selected>None</option>
               <option value="low">Low</option>
@@ -90,7 +107,7 @@
           <input type="hidden" name="task-id" id="task-id" />
           <div>
             <button type="button" class="cancel">Cancel</button>
-            <button class="submit">Add task</button>
+            <button class="submit">Submit task</button>
           </div>
         </form>
         <div id="tasks"></div>

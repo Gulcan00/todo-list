@@ -20,10 +20,11 @@ function createDiv(className, innerText) {
 function displayProject(title) {
   const projectsDiv = document.querySelector(".projects");
   const btn = document.createElement("button");
-
+  btn.id = title;
   btn.classList.add("tab");
   btn.dataset.tab = title;
-  btn.innerHTML = `<span class="material-symbols-outlined"> work </span>${title}`;
+  btn.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true"> work </span>${title}`;
+  btn.setAttribute("aria-labelledby", `projects-title ${title}`);
   projectsDiv.appendChild(btn);
 }
 
@@ -32,7 +33,7 @@ function displayTask(task) {
   const container = document.createElement("div");
   const checkBoxLbl = document.createElement("label");
   const checkBox = document.createElement("input");
-  const titleDiv = document.createElement("div");
+  const titleP = document.createElement("p");
   const checkBoxSpan = document.createElement("span");
 
   container.classList.add("task");
@@ -41,15 +42,19 @@ function displayTask(task) {
   checkBox.name = "complete";
   checkBox.type = "checkbox";
   checkBox.checked = complete;
+  checkBoxLbl.setAttribute("aria-label", "Complete");
+  checkBoxLbl.id = `checkbox-${id}`;
+  checkBoxLbl.setAttribute("aria-labelledby", `checkbox-${id} title-${id}`);
   checkBoxLbl.appendChild(checkBox);
 
   checkBoxLbl.appendChild(checkBoxSpan);
   container.appendChild(checkBoxLbl);
 
-  titleDiv.innerText = title;
-  titleDiv.style.fontWeight = 600;
-  titleDiv.style.textDecoration = checkBox.checked ? "line-through" : "none";
-  container.appendChild(titleDiv);
+  titleP.textContent = title;
+  titleP.id = `title-${id}`;
+  titleP.style.fontWeight = 600;
+  titleP.style.textDecoration = checkBox.checked ? "line-through" : "none";
+  container.appendChild(titleP);
 
   if (description) {
     const descriptionDiv = createDiv(description);
@@ -89,7 +94,7 @@ function displayTask(task) {
     } else {
       color = "blue";
     }
-    priorityDiv.innerHTML = `<span style="color: ${color}; font-size: 18px;" class="material-symbols-outlined">
+    priorityDiv.innerHTML = `<span style="color: ${color}; font-size: 18px;" class="material-symbols-outlined" aria-hidden="true">
     priority_high
     </span>
     ${priority}
@@ -106,13 +111,18 @@ function displayTask(task) {
   delete
   </span>`;
   const deleteBtn = createButton("delete", deleteIcon);
-
+  deleteBtn.id = `delete-${id}`;
+  deleteBtn.setAttribute("aria-label", "Delete");
+  deleteBtn.setAttribute("aria-labelledby", `title-${id} delete-${id}`);
   actionsDiv.appendChild(deleteBtn);
 
-  const editIcon = `<span class="material-symbols-outlined">
+  const editIcon = `<span class="material-symbols-outlined" aria-label="Edit">
   edit
   </span>`;
   const editBtn = createButton("edit", editIcon);
+  editBtn.id = `edit-${id}`;
+  editBtn.setAttribute("aria-label", "Edit");
+  editBtn.setAttribute("aria-labelledby", `title-${id} edit-${id}`);
 
   editBtn.addEventListener("click", () => {
     const form = document.getElementById("new-task");
@@ -138,6 +148,7 @@ function displayTask(task) {
     }
 
     form.style.display = "flex";
+    form.focus();
   });
   actionsDiv.appendChild(editBtn);
 
@@ -215,18 +226,21 @@ export default function domController() {
       div.style.gap = "4px";
       const name = document.createElement("h2");
       name.innerText = projectName;
+      name.tabIndex = -1;
       div.appendChild(name);
 
-      const deleteIcon = `<span class="material-symbols-outlined">
+      const deleteIcon = `<span class="material-symbols-outlined" aria-hidden="true">
       delete
       </span>`;
       const deleteBtn = createButton("delete", deleteIcon);
+      deleteBtn.setAttribute("aria-label", "Delete");
       deleteBtn.addEventListener("click", () =>
         handleDeleteProject(updateScreen),
       );
       div.appendChild(deleteBtn);
 
       tasksDiv.appendChild(div);
+      name.focus();
     }
 
     projects
@@ -307,6 +321,7 @@ export default function domController() {
 
   newTaskBtn.addEventListener("click", () => {
     newTaskForm.style.display = getNewDisplayValue(newTaskForm);
+    newTaskForm.focus();
   });
   cancelTaskBtn.addEventListener("click", () => {
     newTaskForm.style.display = getNewDisplayValue(newTaskForm);
@@ -314,6 +329,7 @@ export default function domController() {
 
   newProjectBtn.addEventListener("click", () => {
     newProjectForm.style.display = getNewDisplayValue(newProjectForm);
+    newProjectForm.focus();
   });
   cancelProjectBtn.addEventListener("click", () => {
     newProjectForm.style.display = getNewDisplayValue(newProjectForm);

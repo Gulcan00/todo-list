@@ -57,7 +57,7 @@ function displayTask(task) {
   container.appendChild(titleP);
 
   if (description) {
-    const descriptionDiv = createDiv(description);
+    const descriptionDiv = createDiv("description", description);
     container.appendChild(descriptionDiv);
   }
 
